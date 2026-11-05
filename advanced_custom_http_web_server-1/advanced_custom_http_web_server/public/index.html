@@ -1,0 +1,316 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="CoreServer is a professional-grade custom HTTP web server built in C for learning low-level web networking." />
+    <title>CoreServer | Advanced Custom HTTP Web Server</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#home" aria-label="CoreServer home">
+        <span class="brand-mark">C</span>
+        <span class="brand-text">CoreServer</span>
+      </a>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="#overview">Overview</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#features">Features</a>
+        <a href="#demo">Demo</a>
+      </nav>
+
+      <a class="button secondary nav-button" href="#implementation">View setup</a>
+    </header>
+
+    <main id="home">
+      <section class="hero section-shell">
+        <div class="hero-copy">
+          <p class="eyebrow">LOW-LEVEL SYSTEMS ENGINEERING</p>
+          <h1>Professional-grade HTTP server, built in C.</h1>
+          <p class="hero-text">
+            CoreServer demonstrates how a modern web experience can be powered by direct TCP communication,
+            request parsing, MIME handling, and static-file delivery without the overhead of a framework.
+          </p>
+
+          <div class="hero-actions">
+            <a class="button primary" href="#architecture">Explore architecture</a>
+            <a class="button secondary" href="#demo">Request preview</a>
+          </div>
+
+          <div class="hero-metrics" aria-label="Project highlights">
+            <div>
+              <strong>TCP/IP</strong>
+              <span>socket layer</span>
+            </div>
+            <div>
+              <strong>HTTP/1.1</strong>
+              <span>request flow</span>
+            </div>
+            <div>
+              <strong>Static files</strong>
+              <span>fast delivery</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="showcase" aria-label="Server mock terminal">
+          <div class="terminal-window">
+            <div class="window-bar">
+              <div class="traffic-lights" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="window-name">server.c</div>
+              <div class="window-status"><span></span> listening</div>
+            </div>
+
+            <pre class="terminal-body"><span class="prompt">$</span> gcc server.c -o server
+<span class="prompt">$</span> ./server 8080 public
+✓ Custom HTTP server running
+✓ Listening on 0.0.0.0:8080
+GET /index.html HTTP/1.1
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+Content-Length: 4621
+Connection: close</pre>
+          </div>
+
+          <div class="metrics-card">
+            <p class="tag-inline">SERVER STATUS</p>
+            <div class="metric-row">
+              <span>Latency</span>
+              <strong>12ms</strong>
+            </div>
+            <div class="metric-row">
+              <span>Port</span>
+              <strong>8080</strong>
+            </div>
+            <div class="metric-row">
+              <span>Method</span>
+              <strong>GET / HEAD</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="trust-bar">
+        <span>SOCKETS</span>
+        <span>HTTP</span>
+        <span>TCP/IP</span>
+        <span>STATIC FILES</span>
+        <span>C / SYSTEMS</span>
+      </div>
+
+      <section class="section-shell section" id="overview">
+        <div class="section-heading">
+          <p class="eyebrow">01 / OVERVIEW</p>
+          <h2>Built for transparency, speed, and low-level control.</h2>
+        </div>
+
+        <div class="overview-grid">
+          <article class="info-card">
+            <span class="card-index">01</span>
+            <h3>Socket foundation</h3>
+            <p>Uses the Berkeley sockets API to open a listening endpoint and accept incoming client connections.</p>
+          </article>
+
+          <article class="info-card">
+            <span class="card-index">02</span>
+            <h3>HTTP request handling</h3>
+            <p>Parses request lines, identifies supported methods, and returns meaningful status codes and headers.</p>
+          </article>
+
+          <article class="info-card">
+            <span class="card-index">03</span>
+            <h3>Static asset delivery</h3>
+            <p>Serves HTML, CSS, JavaScript, and other files with correct MIME types to the browser.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-shell architecture-section" id="architecture">
+        <div class="section-heading">
+          <p class="eyebrow">02 / ARCHITECTURE</p>
+          <h2>From browser request to response stream.</h2>
+        </div>
+
+        <div class="pipeline" aria-label="Server request lifecycle">
+          <div class="pipeline-step">
+            <span>01</span>
+            <strong>Client</strong>
+            <small>Browser issues a request</small>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step active">
+            <span>02</span>
+            <strong>Listen socket</strong>
+            <small>Accept the TCP connection</small>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step">
+            <span>03</span>
+            <strong>HTTP parser</strong>
+            <small>Read method, path and headers</small>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step">
+            <span>04</span>
+            <strong>File handler</strong>
+            <small>Resolve the resource safely</small>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step">
+            <span>05</span>
+            <strong>Response</strong>
+            <small>Send the HTTP status and payload</small>
+          </div>
+        </div>
+
+        <div class="architect-note">
+          This educational implementation keeps the flow simple and easy to audit, making it a strong learning tool for networking fundamentals.
+        </div>
+      </section>
+
+      <section class="section-shell section" id="features">
+        <div class="section-heading">
+          <p class="eyebrow">03 / CAPABILITIES</p>
+          <h2>Small in footprint, strong in fundamentals.</h2>
+        </div>
+
+        <div class="feature-list">
+          <article class="feature-item">
+            <span class="feature-no">01</span>
+            <div class="feature-copy">
+              <h3>TCP connection handling</h3>
+              <p>Creates the listening socket, binds it to a port, and accepts each incoming browser connection.</p>
+            </div>
+            <span class="feature-tag">Implemented</span>
+          </article>
+
+          <article class="feature-item">
+            <span class="feature-no">02</span>
+            <div class="feature-copy">
+              <h3>HTTP method support</h3>
+              <p>Handles GET and HEAD requests while returning clear 405 responses for unsupported methods.</p>
+            </div>
+            <span class="feature-tag">Implemented</span>
+          </article>
+
+          <article class="feature-item">
+            <span class="feature-no">03</span>
+            <div class="feature-copy">
+              <h3>MIME type detection</h3>
+              <p>Maps common extensions like HTML, CSS, JS, SVG, and images to browser-friendly content types.</p>
+            </div>
+            <span class="feature-tag">Implemented</span>
+          </article>
+
+          <article class="feature-item">
+            <span class="feature-no">04</span>
+            <div class="feature-copy">
+              <h3>Structured error handling</h3>
+              <p>Returns clean 400, 403, 404, 405, and 414 replies for malformed or invalid requests.</p>
+            </div>
+            <span class="feature-tag">Implemented</span>
+          </article>
+
+          <article class="feature-item">
+            <span class="feature-no">05</span>
+            <div class="feature-copy">
+              <h3>Path validation</h3>
+              <p>Protects against traversal-style paths and reduces the risk of serving unintended files.</p>
+            </div>
+            <span class="feature-tag alt">Basic</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="section-shell demo-section" id="demo">
+        <div class="demo-copy">
+          <p class="eyebrow">04 / LIVE PREVIEW</p>
+          <h2>See an HTTP exchange in motion.</h2>
+          <p>Switch between common request types to preview how the server responds when content exists, is missing, or uses an unsupported method.</p>
+
+          <div class="request-buttons" aria-label="HTTP request examples">
+            <button type="button" class="request active" data-kind="ok">GET /index.html</button>
+            <button type="button" class="request" data-kind="missing">GET /missing.html</button>
+            <button type="button" class="request" data-kind="method">POST /upload</button>
+          </div>
+        </div>
+
+        <div class="response-panel" aria-live="polite">
+          <div class="response-bar">
+            <span>Response preview</span>
+            <span class="response-code" id="code">200 OK</span>
+          </div>
+          <pre id="response">HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+Content-Length: 4621
+Connection: close
+
+&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;...
+&lt;/html&gt;</pre>
+          <div class="response-footer">
+            <span>HTTP/1.1</span>
+            <span>simulated output</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-shell section" id="implementation">
+        <div class="section-heading">
+          <p class="eyebrow">05 / IMPLEMENTATION</p>
+          <h2>Compile it, run it, and extend it.</h2>
+        </div>
+
+        <div class="steps-grid">
+          <article class="step-card">
+            <span class="step-index">01</span>
+            <h3>Compile the server</h3>
+            <pre>gcc -Wall -Wextra -O2 server.c -o server</pre>
+          </article>
+
+          <article class="step-card">
+            <span class="step-index">02</span>
+            <h3>Start the listener</h3>
+            <pre>./server 8080 public</pre>
+          </article>
+
+          <article class="step-card">
+            <span class="step-index">03</span>
+            <h3>Open the site</h3>
+            <pre>http://localhost:8080</pre>
+          </article>
+        </div>
+
+        <div class="implementation-note">
+          <span>⚠</span>
+          <p>The current project is intentionally educational: it is single-threaded and built for clarity and experimentation rather than production deployment.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <span class="brand-mark small">C</span>
+        <span>CoreServer</span>
+      </div>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="#overview">Overview</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#features">Features</a>
+      </nav>
+      <p>© 2026 CoreServer</p>
+    </footer>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
